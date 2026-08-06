@@ -1,0 +1,9 @@
+# Agent working memory — re-initialized at bootstrap, never versioned
+.pi/memory/
+
+# Phase 1 temporary workspace — regenerated per Phase 1, never versioned
+ui-workspace/
+
+# Working artifacts (regenerated, not versioned)
+.pi/frozen-base-hashes.json
+.pi-lens/
