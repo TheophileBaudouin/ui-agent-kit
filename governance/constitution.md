@@ -1,6 +1,6 @@
 # Constitution — ui-agent-kit
 
-Version: 1.0.0
+Version: 1.1.0
 Last modified: 2026-08-06
 
 > This constitution is inspired by the "constitution first" discipline of
@@ -35,6 +35,17 @@ Last modified: 2026-08-06
    explaining: what it is for, its exact format, when to read it, when/how to update it and
    how to analyze the project to update it correctly. This principle is permanent.
 
+6. **Physical meta/SDK separation.** The SDK lives **exclusively in `sdk/`** and is fully
+   autonomous: it has its own `AGENTS.md`, `.pi/settings.json`, lint configs, skills and
+   docs, and must never reference the meta-project (`governance/`, `references/`,
+   `skills/meta-audit/`). Conversely, no SDK content (components, blocks, interface rules,
+   patterns, design memory, dev skills) may live at the meta-project root — the root holds
+   only governance, research/reports and meta tooling. The decision rule: a file answers
+   "how to build/maintain a Wails frontend" → it belongs in `sdk/`; it answers "how we
+   govern this project" → it belongs in `governance/`/`references/`. When in doubt, ask
+   before creating. `sdk/` is the folder copied by the install command — everything it
+   references must resolve inside it.
+
 ## Naming of added components
 
 We never touch `Button`. We add `PremiumButton` or `DesktopButton` next to it, with its own
@@ -65,4 +76,7 @@ report, with its justification. Phase 6 (optional) will define a recurring compl
 
 ## History
 
+- **1.1.0** (2026-08-06): added principle 6 — physical meta/SDK separation (SDK lives
+  exclusively in `sdk/`, autonomous; meta root holds governance only). Triggered by the
+  SDK/meta mix-up found at audit.
 - **1.0.0** (2026-08-06): initial ratification in session 0 (meta-project).

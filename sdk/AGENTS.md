@@ -34,6 +34,10 @@ duplicated or modified here.
   `docs/design-systems.md`).
 - No silent duplication: if a piece already exists in `ui-sdk/components-index.md`, reuse
   it; otherwise create a new named piece.
+- **This folder is autonomous**: it never references the meta-project (`governance/`,
+  `references/`, meta skills) — everything it needs is inside (`docs/`, `skills/`,
+  `ui-sdk/docs/`). If a piece of content or a reference can only exist outside this folder,
+  it does not belong in the SDK: either bring its source in or drop it.
 - **All files are written in English** — the ecosystem standard.
 - **Every change is verified**: after any implementation, run the diagnostics pass
   (typecheck, lint, build, markdownlint) and fix what it finds before reporting done.

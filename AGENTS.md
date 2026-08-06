@@ -32,6 +32,11 @@ populated, SDK operational and published. Phase 6 (optional audit) pending.
 - **The SDK is static-only, Wails-bound**: frontend builds to a static bundle
   (`frontend/dist/`, `//go:embed`, no SSR, no `next/*`); hash routing (`HashRouter`);
   platform features via `@wailsio/runtime` + Go bindings — see `sdk/docs/wails-constraints.md`.
+- **Physical meta/SDK separation** (constitution, principle 6): the SDK lives exclusively in
+  `sdk/` and is autonomous. Content that answers "how to build/maintain a Wails frontend"
+  goes in `sdk/`; content that answers "how we govern this project" goes in `governance/` or
+  `references/`. Never create SDK files at the repo root, never reference the meta-project
+  from inside `sdk/`. When in doubt, ask before creating.
 - **State files reflect reality**: after any executed phase, update `AGENTS.md` and
   `governance/phases.md` and trace Théo's validation in a versioned file.
 
