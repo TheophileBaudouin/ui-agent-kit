@@ -62,8 +62,8 @@ test("install copies code to src/ and knowledge to ui-kit/", (t) => {
   assert.ok(fs.existsSync(path.join(dir, "src", "components", "command-menu-02.tsx")), "blocks-so copied flat");
   assert.ok(fs.existsSync(path.join(dir, "src", "components", "example", "preferences-screen.tsx")), "example under components/example");
 
-  // knowledge → ui-kit/
-  for (const p of ["AGENTS.md", "README.md", "ui-rules", "patterns", "ux", "skills", "docs", "ui-sdk/docs/CONSUMPTION.md", "ui-sdk/components-index.md"]) {
+  // knowledge → ui-kit/ = ENTIRE sdk/ mirrored (nothing left out, incl. hidden files)
+  for (const p of ["AGENTS.md", "README.md", "ui-rules", "patterns", "ux", "skills", "docs", "ui-sdk/docs/CONSUMPTION.md", "ui-sdk/components-index.md", ".pi/settings.json", ".pi-lens.json", ".markdownlint-cli2.jsonc", "ui-sdk/components/hextaui/settings-preferences.tsx"]) {
     assert.ok(fs.existsSync(path.join(dir, "ui-kit", p)), `ui-kit/${p}`);
   }
 

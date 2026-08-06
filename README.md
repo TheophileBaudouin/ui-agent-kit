@@ -66,7 +66,7 @@ npx ui-agent-kit doctor   # check prerequisites (read-only)
 
 ```text
 ▸ Copying the SDK
-  ✔ 154 SDK files in place (code → src/, knowledge → ui-kit/)
+  ✔ 237 SDK files in place (code → src/, reference → ui-kit/)
   ✔ all @/ imports resolve
 ▸ Wiring configuration
   ✔ wired SDK skills into .pi/settings.json
@@ -87,22 +87,29 @@ npx ui-agent-kit doctor   # check prerequisites (read-only)
 
 ### What gets installed
 
+The **entire `sdk/` folder is mirrored to `ui-kit/`** (reference copy — nothing is left
+out, hidden configs included), and the code pieces are copied into `src/` so imports work:
+
 ```text
 frontend/
 ├── src/
 │   ├── components/
 │   │   ├── ui/            # your frozen base (installed by shadcn, not by the kit)
-│   │   ├── evilcharts/    # kit pieces, per origin
+│   │   ├── evilcharts/    # kit pieces, per origin (usable copy)
 │   │   ├── hextaui/
 │   │   ├── retab/
 │   │   ├── shadcncraft/
 │   │   ├── command-menu-02.tsx   # blocks-so (flat)
 │   │   └── example/       # the Preferences example screen
 │   └── lib/utils.ts       # @/lib/utils, provided by the frozen base
-├── ui-kit/                # knowledge: ui-rules/, patterns/, ux/, skills/, docs/
+├── ui-kit/                # full SDK mirror: ui-sdk/, ui-rules/, patterns/, ux/,
+│                          #   skills/, docs/, .pi/, configs — read & keep this
 ├── .pi/settings.json      # SDK skills wired in (merged, never clobbered)
 └── components.json        # frozen-base config (only written when missing)
 ```
+
+`ui-kit/` is the reference you read; `src/` is the code you build and own. The installer
+only adds/overwrites its own files — it never edits or deletes consumer files.
 
 ## Updating & removing
 

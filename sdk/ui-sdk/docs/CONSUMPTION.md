@@ -14,7 +14,28 @@ npx ui-agent-kit doctor   # check prerequisites
 The installer is the source of truth for the copy rules below. It is idempotent (re-running
 never deletes consumer files), detects your package manager and Wails `frontend/` layout,
 and verifies every `@/` import after copying. Flags: `--skip-base`, `--skip-deps`,
-`--target <dir>`, `--force`. Code lands in `src/`, knowledge in `ui-kit/`.
+`--target <dir>`, `--force`.
+
+**Install layout** — the **entire `sdk/` folder is mirrored to `ui-kit/`** (reference copy:
+components, blocks, rules, patterns, ux, skills, docs, configs — nothing is left out).
+On top of that, the code pieces are copied into `src/` so the `@/` imports resolve:
+
+```text
+frontend/
+├── ui-kit/               # full SDK mirror (ui-sdk/, ui-rules/, patterns/, ux/, skills/, docs/, configs)
+└── src/
+    └── components/
+        ├── evilcharts/   # kit pieces, per origin (usable copy)
+        ├── hextaui/
+        ├── retab/
+        ├── shadcncraft/
+        ├── command-menu-02.tsx   # blocks-so (flat)
+        └── example/      # the Preferences example screen
+```
+
+The `ui-kit/` copy is the reference you read and keep; the `src/` copy is the code you
+build and own. Both come from the same `sdk/` folder — they are never edited in place by
+the installer (it only adds/overwrites its own files).
 
 ## Model: copy-paste source library (like shadcn/ui)
 

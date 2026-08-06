@@ -35,26 +35,18 @@ const isBaseProvided = (spec) =>
   spec.startsWith("@wailsio/") ||
   spec.startsWith("node:");
 
-// Canonical copy rules. Code goes under src/ (so @/ imports resolve per the
-// CONSUMPTION contract); knowledge (rules/patterns/ux/skills/docs) goes to ui-kit/.
+// Canonical copy rules. The ENTIRE sdk/ folder is mirrored to ui-kit/ (reference
+// copy: components, blocks, rules, patterns, ux, skills, docs, configs — nothing
+// is left out). On top of that, the code pieces are copied into src/ so the
+// @/ imports resolve per the CONSUMPTION contract. One rule per code location:
+// adding a new folder to sdk/ requires NO new rule here.
 const COPY_RULES = [
-  // code → src/
+  // entire SDK → ui-kit/ (full mirror, hidden files included)
+  { from: "sdk", to: "ui-kit" },
+  // usable code → src/
   { from: "sdk/ui-sdk/components", to: "src/components" },
   { from: "sdk/ui-sdk/blocks/blocks-so", to: "src/components" }, // flat — blocks are self-contained
   { from: "sdk/ui-sdk/examples/preferences-screen", to: "src/components/example" },
-  // knowledge → ui-kit/
-  { from: "sdk/ui-sdk/docs", to: "ui-kit/ui-sdk/docs" },
-  { from: "sdk/ui-sdk/layouts", to: "ui-kit/ui-sdk/layouts" },
-  { from: "sdk/ui-sdk/templates", to: "ui-kit/ui-sdk/templates" },
-  { from: "sdk/ui-sdk/README.md", to: "ui-kit/ui-sdk/README.md" },
-  { from: "sdk/ui-sdk/components-index.md", to: "ui-kit/ui-sdk/components-index.md" },
-  { from: "sdk/ui-rules", to: "ui-kit/ui-rules" },
-  { from: "sdk/patterns", to: "ui-kit/patterns" },
-  { from: "sdk/ux", to: "ui-kit/ux" },
-  { from: "sdk/skills", to: "ui-kit/skills" },
-  { from: "sdk/docs", to: "ui-kit/docs" },
-  { from: "sdk/AGENTS.md", to: "ui-kit/AGENTS.md" },
-  { from: "sdk/README.md", to: "ui-kit/README.md" },
 ];
 
 const IMPORT_RE = /\bfrom\s+["']([^"']+)["']/g;
