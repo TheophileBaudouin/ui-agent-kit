@@ -1,4 +1,4 @@
-# Research log — Session 0 (ui-dev-kit meta-project)
+# Research log — Session 0 (ui-agent-kit meta-project)
 
 > Verification date: August 6, 2026 (every statement below was verified by direct reading of
 > the locally installed Pi docs, official pages, or GitHub repos cloned during this session —

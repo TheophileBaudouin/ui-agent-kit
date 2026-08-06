@@ -1,4 +1,4 @@
-# End-of-session 0 report — ui-dev-kit meta-project
+# End-of-session 0 report — ui-agent-kit meta-project
 
 > Date: August 6, 2026 · Phase 0 (meta-project) · To be validated by Théo before any follow-up.
 
@@ -82,7 +82,7 @@ Rejected skills and why: ebuntario/apple-hig (2★), plugin87/ux-ui-agent-skills
 
 ## 4. Choices made with Théo (answers received, not defaults)
 
-- **Name**: ui-dev-kit (Théo's choice).
+- **Name**: ui-agent-kit (Théo's choice).
 - **Location**: separate repository from go-dev-kit (Théo's choice) — this folder is the root.
 - **Paid blocks**: 100% free / open source (Théo's choice) — documented in phases.md
   (Phase 2) and research-log.md.

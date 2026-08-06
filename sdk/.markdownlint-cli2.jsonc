@@ -6,5 +6,5 @@
     "MD060": false,
     "MD040": true
   },
-  "globs": ["**/*.md", "!**/node_modules/**", "!**/.pi/**", "!**/ui-workspace/**", "!skills/**", "!sdk/skills/**"]
+  "globs": ["**/*.md", "!**/node_modules/**", "!**/.pi/**", "!**/ui-workspace/**", "!skills/**"]
 }

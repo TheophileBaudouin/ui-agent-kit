@@ -1,4 +1,4 @@
-# Parallel work — ui-dev-kit
+# Parallel work — ui-agent-kit
 
 > Verified in session 0 — `references/research-log.md` §G. This file documents **how** to
 > parallelize when needed, not an obligation to do so.
@@ -40,7 +40,7 @@ max 2 per session). Detailed recipes: `skills/pi-subagents/`.
 
 **Useful** for:
 
-- populating several independent `ui-rules/` files at once (Phase 4),
+- populating several independent `sdk/ui-rules/` files at once,
 - evaluating several skill/block candidates in parallel (Phase 0 / Phase 2),
 - harvesting several block sources in parallel (Phase 2),
 - reviewing several SDK components in parallel (Phase 5),
@@ -69,19 +69,19 @@ session keeps the lead role: it launches the fan-out, synthesizes, fixes, merges
 
 ```bash
 # From a clean main branch:
-git worktree add ../ui-dev-kit-worker-1 -b feat/rules-spacing
-git worktree add ../ui-dev-kit-worker-2 -b feat/rules-colors
+git worktree add ../ui-agent-kit-worker-1 -b feat/rules-spacing
+git worktree add ../ui-agent-kit-worker-2 -b feat/rules-colors
 
 # One tmux window per worker:
 tmux new-window -n worker-1
 tmux new-window -n worker-2
 # … then launch a Pi instance in each worktree:
-cd ../ui-dev-kit-worker-1 && pi
-cd ../ui-dev-kit-worker-2 && pi
+cd ../ui-agent-kit-worker-1 && pi
+cd ../ui-agent-kit-worker-2 && pi
 
 # The lead reviews then merges:
 git checkout main && git merge feat/rules-spacing
-git worktree remove ../ui-dev-kit-worker-1
+git worktree remove ../ui-agent-kit-worker-1
 ```
 
 ### Option C — community packages (evaluate before use)
@@ -92,8 +92,8 @@ them only if pi-subagents is not enough.
 
 ## Guardrails
 
-- Only one agent writes to a given file at a time (no merge hell on `ui-rules/01-spacing.md`).
-- Subagents/workers never modify: `governance/`, `AGENTS.md`, `.pi/`, `ux/design-decisions.md`.
+- Only one agent writes to a given file at a time (no merge hell on `sdk/ui-rules/01-spacing.md`).
+- Subagents/workers never modify: `governance/`, `AGENTS.md`, `.pi/`, `sdk/ux/design-decisions.md`.
 - Any merge by the lead goes through a review (the `ui-review` skill for UI, the
   constitution for governance).
 - In Phase 0 and for governance: **never in parallel**.

@@ -1,39 +1,27 @@
-# ui-dev-kit
+# ui-agent-kit
 
 Premium **desktop UI kit** for Théo's Wails apps (Go + React).
-This repository holds the **governance** (rules, phases, skills) **and the built SDK**
-(harvested components and blocks in `ui-sdk/`).
+This repository is the **meta-project** (governance, research, audit) **and** the **SDK**
+itself in `sdk/` — the consumable kit that is copied into Wails frontends.
 
 ## What this repo contains
 
 | Folder | Role |
 | --- | --- |
-| `governance/` | The rules of the game: constitution (non-negotiable), phases (roadmap, 0–5 done), parallel work, 9 authoring guides |
-| `skills/` | AI skills: in-house guards (`ux-memory`, `ui-review`, `meta-audit`) + reference design skills (shadcn, Anthropic, Vercel, Apple HIG) |
-| `ux/` | Design memory: personas, flows, screens — empty templates, filled with real product decisions when they exist |
-| `ui-rules/` | Interface rules (spacing, colors, typography…) — 10 files, filled and sourced (Phase 4) |
-| `patterns/` | How to organize recurring screens (settings, table, search…) — 8 files, filled (Phase 4) |
-| `references/` | Verified research (log), design systems, Wails constraints, session/phase reports, audit |
-| `ui-sdk/` | The SDK: 40 license-verified components/blocks, per-piece README, index, consumption guide |
-| `ui-workspace/` | Temporary buildable reference (frozen base, 61 shadcn components) — **gitignored, regenerable** |
+| `sdk/` | **The SDK** (own AGENTS.md + configs): components/blocks (`ui-sdk/`), interface rules (`ui-rules/`), screen patterns (`patterns/`), design memory (`ux/`), dev skills (`skills/`), docs (Wails constraints, design systems, authoring guides) |
+| `governance/` | The meta-project's rules: constitution (non-negotiable), phases (roadmap, 0–5 done), parallel work |
+| `references/` | Research log, phase reports 0–5, Wails constraints source notes, audit report |
+| `skills/` | Meta-level skill: `meta-audit` (recurring project audit) |
+| `ui-workspace/` | Temporary buildable mirror (frozen base, 61 shadcn components) — **gitignored**, used to verify SDK pieces |
 
 ## Where the project stands
 
-**Phases 0–5 done and validated by Théo (2026-08-06).** The kit is operational: frozen base
-installed, blocks harvested, SDK organized, rules populated, review guard active. See
-`governance/phases.md` for the roadmap and `references/` for the reports.
-
-## For you (not for agents)
-
-- You don't code: you validate. Agents read `AGENTS.md` and the governance at startup.
-- Any question asked to you is a simple product decision (name, target, order) — not an
-  internal technical question.
-- Decisions already made: name **ui-dev-kit**, **separate** repository from go-dev-kit,
-  100% **free/open-source** block sources.
+**Phases 0–5 done and validated by Théo (2026-08-06).** Governance populated, SDK
+operational and published to GitHub. See `governance/phases.md` and `references/`.
 
 ## Getting started
 
-1. Read `references/session-0-report.md` (what was decided) and `references/audit-2026-08-06.md`
-   (current health).
-2. To use the kit in a Wails app: read `ui-sdk/docs/CONSUMPTION.md`.
-3. Optional next step: Phase 6 (recurring constitution audit) — Théo's call.
+1. **Using the kit in a Wails app**: go into `sdk/`, read `sdk/AGENTS.md` and
+   `sdk/ui-sdk/docs/CONSUMPTION.md`.
+2. **Working on the meta-project**: read `AGENTS.md` and `governance/constitution.md`.
+3. Optional next step: Phase 6 (recurring constitution audit via `skills/meta-audit/`).
