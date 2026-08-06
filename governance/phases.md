@@ -41,4 +41,5 @@
   pushed to GitHub.
 - **2026-08-07**: Phase 7 (single-command installer) executed at Théo's request
   (`references/phase-7-report.md`), pushed to GitHub; second audit
-  (`references/audit-2026-08-07.md`).
+  (`references/audit-2026-08-07.md`); npm package `ui-agent-kit@0.1.0` published
+  (passkey/WebAuthn 2FA).

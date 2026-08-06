@@ -132,6 +132,10 @@ only adds/overwrites its own files — it never edits or deletes consumer files.
 | `skills/` | Meta-level skill: `meta-audit` (recurring project audit) |
 | `ui-workspace/` | Temporary buildable mirror (frozen base) — gitignored, used to verify SDK pieces |
 
+> The **npm package ships `cli/` + `sdk/`** (+ README, LICENSE). The remaining folders
+> (`governance/`, `references/`, `skills/`, `ui-workspace/`) are the meta-project — they
+> exist in the repository only.
+
 ## Development
 
 ```bash
