@@ -1,0 +1,31 @@
+{
+  "name": "ui-agent-kit",
+  "version": "0.1.0",
+  "description": "Single-command installer for the ui-agent-kit desktop UI SDK (components, rules, patterns, skills for Wails apps).",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "bin": {
+    "ui-agent-kit": "cli/index.js"
+  },
+  "files": [
+    "cli/",
+    "sdk/",
+    "README.md"
+  ],
+  "scripts": {
+    "manifest": "node cli/generate-manifest.js",
+    "test": "node --test cli/test/*.test.js",
+    "verify": "node cli/generate-manifest.js --check && node --test cli/test/*.test.js",
+    "prepublishOnly": "node cli/generate-manifest.js && node --test cli/test/*.test.js"
+  },
+  "keywords": [
+    "wails",
+    "ui-kit",
+    "shadcn",
+    "desktop",
+    "cli"
+  ]
+}

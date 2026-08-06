@@ -3,6 +3,19 @@
 > How to use `ui-sdk/` in a real Wails app (or any React + Vite + TS project). This is the
 > contract every consumer must follow. Verified 2026-08-06.
 
+## Single-command install (recommended)
+
+```bash
+npx ui-agent-kit          # install: copy SDK, install base + deps, wire configs
+npx ui-agent-kit update   # refresh when a newer version is published
+npx ui-agent-kit doctor   # check prerequisites
+```
+
+The installer is the source of truth for the copy rules below. It is idempotent (re-running
+never deletes consumer files), detects your package manager and Wails `frontend/` layout,
+and verifies every `@/` import after copying. Flags: `--skip-base`, `--skip-deps`,
+`--target <dir>`, `--force`. Code lands in `src/`, knowledge in `ui-kit/`.
+
 ## Model: copy-paste source library (like shadcn/ui)
 
 `ui-sdk/` is **not** an npm package. It is a source library: you copy the files you need into
@@ -20,6 +33,9 @@ the kit dependency-free.
 | Rule | Why |
 | --- | --- |
 | Copy a whole folder, keep the relative path under `src/` | Internal imports between kit files are relative (`@/components/…` or `./…`) and break if the path changes |
+| `components/<origin>/` → `src/components/<origin>/` | Origin folders (evilcharts, hextaui, retab, shadcncraft) keep their internal `@/components/<origin>/…` imports valid |
+| `blocks/blocks-so/*.tsx` → `src/components/` (flat) | blocks-so files are self-contained single files, imported as `@/components/<name>` |
+| `examples/preferences-screen/` → `src/components/example/` | The example screen imports the kit as a consumer would |
 | `@/components/ui/*` imports point to **your** frozen base | The kit components are built on top of the base; never copy the base itself from `ui-sdk/` |
 | Install the npm deps listed in the piece's README | e.g. `echarts` for evilcharts, `motion` for shadcncraft — they are declared per piece |
 | Keep `ThemeProvider` + `TooltipProvider` wrappers where the piece requires them | Documented per piece (tooltip-based pieces need the provider) |

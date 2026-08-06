@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import SettingsPreferences, {
 	type PreferencesData,
-} from "@/components/ui/settings-preferences";
-import SettingsNotifications from "@/components/ui/settings-notifications";
-import SettingsSecurity from "@/components/ui/settings-security";
+} from "@/components/hextaui/settings-preferences";
+import SettingsNotifications from "@/components/hextaui/settings-notifications";
+import SettingsSecurity from "@/components/hextaui/settings-security";
 import { CommandMenu02 } from "@/components/command-menu-02";
 import {
 	SidebarProvider,

@@ -1,0 +1,73 @@
+{
+  "version": "0.1.0",
+  "deps": [
+    "@tabler/icons-react",
+    "echarts",
+    "motion",
+    "react-medium-image-zoom",
+    "recharts"
+  ],
+  "copyRules": [
+    {
+      "from": "sdk/ui-sdk/components",
+      "to": "src/components"
+    },
+    {
+      "from": "sdk/ui-sdk/blocks/blocks-so",
+      "to": "src/components"
+    },
+    {
+      "from": "sdk/ui-sdk/examples/preferences-screen",
+      "to": "src/components/example"
+    },
+    {
+      "from": "sdk/ui-sdk/docs",
+      "to": "ui-kit/ui-sdk/docs"
+    },
+    {
+      "from": "sdk/ui-sdk/layouts",
+      "to": "ui-kit/ui-sdk/layouts"
+    },
+    {
+      "from": "sdk/ui-sdk/templates",
+      "to": "ui-kit/ui-sdk/templates"
+    },
+    {
+      "from": "sdk/ui-sdk/README.md",
+      "to": "ui-kit/ui-sdk/README.md"
+    },
+    {
+      "from": "sdk/ui-sdk/components-index.md",
+      "to": "ui-kit/ui-sdk/components-index.md"
+    },
+    {
+      "from": "sdk/ui-rules",
+      "to": "ui-kit/ui-rules"
+    },
+    {
+      "from": "sdk/patterns",
+      "to": "ui-kit/patterns"
+    },
+    {
+      "from": "sdk/ux",
+      "to": "ui-kit/ux"
+    },
+    {
+      "from": "sdk/skills",
+      "to": "ui-kit/skills"
+    },
+    {
+      "from": "sdk/docs",
+      "to": "ui-kit/docs"
+    },
+    {
+      "from": "sdk/AGENTS.md",
+      "to": "ui-kit/AGENTS.md"
+    },
+    {
+      "from": "sdk/README.md",
+      "to": "ui-kit/README.md"
+    }
+  ],
+  "generatedAt": "2026-08-06T22:25:27.818Z"
+}

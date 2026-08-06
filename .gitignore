@@ -7,3 +7,6 @@ ui-workspace/
 # Working artifacts (regenerated, not versioned)
 .pi/frozen-base-hashes.json
 .pi-lens/
+
+# macOS
+.DS_Store

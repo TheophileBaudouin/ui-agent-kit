@@ -1,0 +1,193 @@
+// ui-agent-kit install CLI — end-to-end tests (node:test, no dependencies, no network).
+// Runs the real CLI against temp fixture projects with --skip-base --skip-deps.
+
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+import { verifyImports } from "../lib/copy.js";
+
+const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
+const CLI = path.join(TEST_DIR, "..", "index.js");
+const PKG_ROOT = path.dirname(path.dirname(TEST_DIR));
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (err) {
+    throw new Error(`cannot read test fixture ${file}: ${err.message}`);
+  }
+}
+
+const VERSION = readJson(path.join(PKG_ROOT, "package.json")).version;
+
+function runCli(args) {
+  return spawnSync(process.execPath, [CLI, ...args], { encoding: "utf8" });
+}
+
+/** Minimal consumer project: Vite + React deps, fake frozen base (no network). */
+function makeFixture(t) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ui-kit-test-"));
+  fs.mkdirSync(path.join(dir, "src", "lib"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "src", "components", "ui"), { recursive: true });
+  fs.mkdirSync(path.join(dir, ".pi"), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, "package.json"),
+    JSON.stringify({
+      name: "fixture-app",
+      version: "0.0.1",
+      dependencies: { react: "^19", "react-dom": "^19", vite: "^6", "@vitejs/plugin-react": "^4" },
+    }),
+  );
+  fs.writeFileSync(path.join(dir, "src", "lib", "utils.ts"), 'export function cn(...parts) { return parts.filter(Boolean).join(" "); }\n');
+  fs.writeFileSync(path.join(dir, "src", "components", "ui", "button.tsx"), 'export function Button() { return <button />; }\n');
+  fs.writeFileSync(path.join(dir, ".pi", "settings.json"), JSON.stringify({ skills: ["../existing"] }));
+  fs.writeFileSync(path.join(dir, "tsconfig.json"), JSON.stringify({ compilerOptions: {} }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  return dir;
+}
+
+test("install copies code to src/ and knowledge to ui-kit/", (t) => {
+  const dir = makeFixture(t);
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0, res.stdout + res.stderr);
+
+  // code → src/, canonical layout
+  assert.ok(fs.existsSync(path.join(dir, "src", "components", "hextaui", "settings-preferences.tsx")), "hextaui origin folder");
+  assert.ok(fs.existsSync(path.join(dir, "src", "components", "evilcharts", "charts", "echarts-bar-chart.tsx")), "evilcharts origin folder");
+  assert.ok(fs.existsSync(path.join(dir, "src", "components", "command-menu-02.tsx")), "blocks-so copied flat");
+  assert.ok(fs.existsSync(path.join(dir, "src", "components", "example", "preferences-screen.tsx")), "example under components/example");
+
+  // knowledge → ui-kit/
+  for (const p of ["AGENTS.md", "README.md", "ui-rules", "patterns", "ux", "skills", "docs", "ui-sdk/docs/CONSUMPTION.md", "ui-sdk/components-index.md"]) {
+    assert.ok(fs.existsSync(path.join(dir, "ui-kit", p)), `ui-kit/${p}`);
+  }
+
+  // example imports were canonicalized — no leftover @/components/ui/settings-* paths
+  const example = fs.readFileSync(path.join(dir, "src", "components", "example", "preferences-screen.tsx"), "utf8");
+  assert.match(example, /@\/components\/hextaui\/settings-preferences/);
+  assert.doesNotMatch(example, /@\/components\/ui\/settings-/);
+});
+
+test(".pi/settings.json is merged, preserving existing entries", (t) => {
+  const dir = makeFixture(t);
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0);
+  const settings = JSON.parse(fs.readFileSync(path.join(dir, ".pi", "settings.json"), "utf8"));
+  assert.ok(settings.skills.includes("../existing"), "existing skill preserved");
+  assert.ok(settings.skills.includes("../ui-kit/skills"), "SDK skills wired");
+});
+
+test("installed manifest records the SDK version", (t) => {
+  const dir = makeFixture(t);
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0);
+  const manifest = readJson(path.join(dir, "ui-kit", ".ui-agent-kit.json"));
+  assert.equal(manifest.version, VERSION);
+  assert.equal(manifest.frontendRoot, dir);
+});
+
+test("re-running install is idempotent (exit 0, same file count)", (t) => {
+  const dir = makeFixture(t);
+  assert.equal(runCli(["install", "--skip-base", "--skip-deps", "--target", dir]).status, 0);
+  const count = () => {
+    let n = 0;
+    for (const root of ["ui-kit", "src"]) {
+      const walk = (d) => {
+        for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+          const p = path.join(d, e.name);
+          if (e.isDirectory()) walk(p);
+          else n++;
+        }
+      };
+      walk(path.join(dir, root));
+    }
+    return n;
+  };
+  const before = count();
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0);
+  assert.equal(count(), before, "second run must not duplicate files");
+});
+
+test("update reports up to date, --force refreshes", (t) => {
+  const dir = makeFixture(t);
+  assert.equal(runCli(["install", "--skip-base", "--skip-deps", "--target", dir]).status, 0);
+  const upToDate = runCli(["update", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(upToDate.status, 0);
+  assert.match(upToDate.stdout, /up to date/);
+
+  fs.rmSync(path.join(dir, "src", "components", "retab"), { recursive: true, force: true });
+  const forced = runCli(["update", "--force", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(forced.status, 0);
+  assert.ok(fs.existsSync(path.join(dir, "src", "components", "retab", "dropzone.tsx")), "--force restores removed files");
+});
+
+test("import self-check fails loudly on an unresolvable kit import", (t) => {
+  const dir = makeFixture(t);
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0);
+
+  // unit-level: corrupt a copied file AFTER the copy, then run the guard directly
+  const file = path.join(dir, "src", "components", "retab", "dropzone.tsx");
+  fs.appendFileSync(file, '\nimport x from "@/components/does-not-exist";\n');
+  const { errors } = verifyImports(dir, ["src/components/retab/dropzone.tsx"]);
+  assert.ok(errors.length > 0, "broken @/ import must be reported");
+  assert.match(errors[0], /dropzone\.tsx → @\/components\/does-not-exist/);
+});
+
+test("missing frozen base is a warning, not a failure (--skip-base)", (t) => {
+  const dir = makeFixture(t);
+  fs.rmSync(path.join(dir, "src", "components", "ui"), { recursive: true, force: true });
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0);
+  assert.match(res.stdout + res.stderr, /base .*skipped/i);
+});
+
+test("doctor is read-only and exits 0", (t) => {
+  const dir = makeFixture(t);
+  const res = runCli(["doctor", "--target", dir]);
+  assert.equal(res.status, 0);
+  assert.match(res.stdout, /doctor/);
+});
+
+test("Wails layout (frontend/) is auto-detected", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ui-kit-wails-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(dir, "frontend", "src", "lib"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "frontend", "src", "components", "ui"), { recursive: true });
+  fs.mkdirSync(path.join(dir, "frontend", ".pi"), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, "frontend", "package.json"),
+    JSON.stringify({ name: "wails-app", dependencies: { react: "^19", vite: "^6", "@vitejs/plugin-react": "^4" } }),
+  );
+  fs.writeFileSync(path.join(dir, "frontend", "src", "lib", "utils.ts"), "export const cn = () => '';\n");
+  fs.writeFileSync(path.join(dir, "frontend", "src", "components", "ui", "button.tsx"), "export function Button() { return null; }\n");
+  fs.writeFileSync(path.join(dir, "frontend", ".pi", "settings.json"), "{}\n");
+
+  const res = runCli(["install", "--skip-base", "--skip-deps", "--target", dir]);
+  assert.equal(res.status, 0, res.stdout + res.stderr);
+  // the kit must land in frontend/, not at the repo root
+  assert.ok(fs.existsSync(path.join(dir, "frontend", "ui-kit", "AGENTS.md")), "ui-kit under frontend/");
+  assert.ok(fs.existsSync(path.join(dir, "frontend", "src", "components", "hextaui", "settings-preferences.tsx")));
+  assert.ok(!fs.existsSync(path.join(dir, "ui-kit")), "nothing copied at the repo root");
+});
+
+test("non-project directory → explicit error, exit 1", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ui-kit-noproj-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const res = runCli(["install", "--target", dir]);
+  assert.equal(res.status, 1);
+  assert.match(res.stdout + res.stderr, /no package\.json/i);
+});
+
+test("--version and --help work", () => {
+  assert.equal(runCli(["--version"]).stdout.trim(), VERSION);
+  const help = runCli(["--help"]);
+  assert.equal(help.status, 0);
+  assert.match(help.stdout, /Usage:/);
+});
