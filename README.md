@@ -53,8 +53,8 @@ npx ui-agent-kit doctor   # check prerequisites (read-only)
 
 ### What `npx ui-agent-kit` does
 
-1. **Copies the SDK** — components/blocks into `src/`, knowledge (rules, patterns, UX,
-   skills, docs) into `ui-kit/`.
+1. **Copies the SDK** — the entire `sdk/` folder is mirrored to `ui-kit/` (reference,
+   nothing left out), and the code pieces are copied into `src/` so imports resolve.
 2. **Verifies imports** — every `@/` import in the copied code is checked; a broken copy
    fails with an explicit error instead of a silent misbuild.
 3. **Installs the frozen base** when missing — `npx shadcn@latest add --all` (radix-nova

@@ -1,7 +1,8 @@
 # Phases — ui-agent-kit roadmap
 
-> Phases 0–5 are **executed and validated by Théo (2026-08-06)**. Phase 6 is optional and
-> pending Théo's decision. Each phase's exit criterion was met before moving on.
+> Phases 0–5 are **executed and validated by Théo (2026-08-06)**. Phase 7 (single-command
+> installer) was executed at Théo's request (2026-08-06). Phase 6 is optional and pending
+> Théo's decision. Each phase's exit criterion was met before moving on.
 
 ## Phase table
 
@@ -14,6 +15,7 @@
 | 4 | Rule population | Real writing of `sdk/ui-rules/` and `sdk/patterns/` from verified sources | Every file cites its sources | ✅ done — report `references/phase-4-report.md` |
 | 5 | ui-review skill | Review guard operational on the real SDK | One successful test review on an example screen | ✅ done — report `references/phase-5-report.md` |
 | 6 | Continuous audit (optional) | Recurring audit skill re-checking constitution compliance | To define with Théo if wanted | ⏳ pending — skill `skills/meta-audit/` ready, first run: `references/audit-2026-08-06.md` |
+| 7 | Single-command installer | Zero-dependency Node CLI (`npx ui-agent-kit`): install/update/doctor, generated manifest, import self-check, e2e tests, docs | All e2e tests green; install verified on a Wails `frontend/` layout | ✅ done — 11 tests, report `references/phase-7-report.md` |
 
 ## What is allowed now (post-Phase 5)
 
@@ -37,3 +39,6 @@
 - **2026-08-06**: phases 0–5 executed and validated by Théo; audit performed
   (`references/audit-2026-08-06.md`), state files updated to reflect reality, repository
   pushed to GitHub.
+- **2026-08-07**: Phase 7 (single-command installer) executed at Théo's request
+  (`references/phase-7-report.md`), pushed to GitHub; second audit
+  (`references/audit-2026-08-07.md`).

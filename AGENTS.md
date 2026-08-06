@@ -4,12 +4,14 @@
 
 Meta-project of the **premium desktop UI kit** for Théo's Wails apps
 (Go + Wails, frontend React + TypeScript + Vite + Tailwind + shadcn/ui + Radix + Lucide).
-This repository holds the **governance** (rules, phases, skills, templates) and the **SDK**
-itself in `sdk/` (components, blocks, interface rules, patterns, design memory, dev skills).
+This repository holds the **governance** (rules, phases, skills, templates), the **SDK**
+itself in `sdk/` (components, blocks, interface rules, patterns, design memory, dev skills)
+and the **installer CLI** in `cli/` (zero-dep Node, published on npm as `ui-agent-kit`).
 The frozen-base reference (`ui-workspace/`, gitignored, 61 shadcn components) is the
 temporary buildable mirror used to verify SDK pieces.
 Current state: **phases 0–5 executed and validated by Théo (2026-08-06)** — governance
-populated, SDK operational and published. Phase 6 (optional audit) pending.
+populated, SDK operational and published; **Phase 7 (single-command installer) executed at
+Théo's request (2026-08-06), pushed and published on npm**. Phase 6 (optional audit) pending.
 
 ## Before doing anything
 
@@ -58,6 +60,16 @@ populated, SDK operational and published. Phase 6 (optional audit) pending.
 ## Useful commands (verified — see references/research-log.md)
 
 ```bash
+# Install the SDK in a consumer Wails/Vite project (see root README)
+npx ui-agent-kit          # install: mirror sdk/ → ui-kit/, copy code → src/, base + deps + configs
+npx ui-agent-kit update   # refresh when a newer version is published
+npx ui-agent-kit doctor   # check prerequisites (read-only)
+
+# Installer maintenance (cli/)
+npm run manifest   # regenerate cli/manifest.json from the SDK's actual imports
+npm test           # end-to-end suite (temp fixtures, no network)
+npm publish        # prepublishOnly = manifest + tests, then publish
+
 # Verify SDK pieces: copy to ui-workspace (the buildable mirror) and build
 cd ui-workspace && npm run build
 
@@ -69,9 +81,9 @@ npx skills add <owner>/<repo> -a pi
 ```
 
 The meta-project's own skill lives in `skills/` (root: `meta-audit`), declared to Pi via
-`.pi/settings.json` → `{ "skills": ["../skills"] }` (a root `skills/` folder is not
-auto-discovered by Pi — see `references/research-log.md` §A). The SDK's skills are declared
-by `sdk/.pi/settings.json` inside the SDK.
+`.pi/settings.json` → `{ "skills": ["../skills", "../sdk/skills"] }` (a root `skills/` folder
+is not auto-discovered by Pi — see `references/research-log.md` §A). The SDK's skills are
+declared by `sdk/.pi/settings.json` inside the SDK.
 
 ## Reminder
 

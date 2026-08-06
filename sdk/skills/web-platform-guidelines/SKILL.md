@@ -1,6 +1,6 @@
 ---
 name: web-platform-guidelines
-description: Web platform design and accessibility guidelines (WCAG 2.2, MDN). Use when auditing accessibility, implementing responsive layouts, or reviewing web UI code. Triggers on tasks involving HTML, CSS, web components, WCAG compliance, responsive design, or web performance. (Renommé depuis web-design-guidelines pour éviter la collision avec le skill vercel-labs du même nom.)
+description: Web platform design and accessibility guidelines (WCAG 2.2, MDN). Use when auditing accessibility, implementing responsive layouts, or reviewing web UI code. Triggers on tasks involving HTML, CSS, web components, WCAG compliance, responsive design, or web performance. (Renamed from web-design-guidelines to avoid a collision with the vercel-labs skill of the same name.)
 license: MIT
 metadata:
   author: platform-design-skills
