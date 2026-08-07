@@ -26,6 +26,14 @@ human approvals, generated artifacts.
    renders Accept / Deny / shortcuts, the decision resumes the run.
 5. For multi-step work, a side panel with `ExecutionTimeline` + `ArtifactPreview` next to
    the chat gives the "mission control" view (desktop layout, `ui-rules/06-layout.md`).
+6. **Conversation history** (multi-conversation apps): `ThreadList` in a desktop sidebar —
+   new thread, search, date groups, rename/archive/delete. Requires a thread-list-capable
+   runtime (AI SDK cloud threads, LangGraph, custom `ExternalStore` thread list).
+7. **Copilot pattern** (ask from anywhere): `AssistantModal` — a floating button opening a
+   full Thread popover, without leaving the current screen.
+8. **Multi-agent platforms**: render sub-agent conversations inside tool call UIs via the
+   tool part's `messages` field (`ThreadMessage[]` nested threads) — see the assistant-ui
+   multi-agent guide; keep the kit components for the outer conversation.
 
 ## Common mistakes
 
@@ -53,11 +61,18 @@ human approvals, generated artifacts.
 - Keyboard: Enter to send, Shift+Enter newline, Esc to stop (`ui-rules/08-keyboard.md`).
 - Static-only build: the kit is UI-only and runtime-agnostic — perfect for Wails
   (`docs/wails-constraints.md`).
+- **Code blocks**: the kit's markdown renders code blocks with a language header + copy
+  button but no syntax highlighting (assistant-ui default). For highlighting, wire
+  `react-shiki` (recommended by assistant-ui for performance) into the markdown
+  components — see the assistant-ui syntax-highlighting guide; keep the kit itself
+  dependency-light.
 
 ## Components/blocks recommended
 
 - `ui-sdk/components/assistant-ui/thread.tsx` — the assistant-ui conversation base
   (registry: r.assistant-ui.com, MIT).
+- `ui-sdk/components/assistant-ui/thread-list.tsx` — conversation history sidebar.
+- `ui-sdk/components/assistant-ui/assistant-modal.tsx` — copilot chat-in-popover.
 - `ui-sdk/components/agent/agent-chat.tsx`, `agent-message.tsx`, `agent-composer.tsx`,
   `use-agent-status.ts` — conversation + agent state.
 - `ui-sdk/components/agent/tool-call.tsx`, `tool-result.tsx`, `tool-call-ui.tsx` — tool

@@ -8,9 +8,11 @@
 | Category | component (agent) |
 
 Assistant message variant with agent metadata: avatar, agent name and a per-message
-`ThinkingIndicator` (derived from the assistant-ui message status). Part rendering
-mirrors the reference thread: grouped reasoning, grouped tool calls, markdown text,
-registered tool UIs and the kit's `AgentToolCallUI` fallback (tool cards + approvals).
+`ThinkingIndicator` (derived from the assistant-ui message status), plus the message
+**action bar** (copy / reload / export as Markdown) and **branch picker** — parity with the
+reference thread's assistant message. Part rendering mirrors the reference thread:
+grouped reasoning, grouped tool calls, markdown text, registered tool UIs and the kit's
+`AgentToolCallUI` fallback (tool cards + approvals).
 
 ## Dependencies
 

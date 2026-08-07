@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { CheckCircle2 } from "lucide-react";
 
+import { ThreadList } from "@/components/assistant-ui/thread-list";
 import { AgentChat } from "@/components/agent/agent-chat";
 import { ApprovalCard } from "@/components/agent/approval-card";
 import { ArtifactPreview } from "@/components/agent/artifact-preview";
@@ -20,6 +21,13 @@ export function AgentChatDemo() {
   return (
     <AssistantRuntimeProvider runtime={runtime}>
       <div className="flex h-[720px] gap-6 p-6">
+        <aside
+          aria-label="Conversation history"
+          className="w-64 shrink-0 overflow-hidden rounded-xl border p-2"
+        >
+          <ThreadList />
+        </aside>
+
         <section aria-label="Agent chat" className="min-w-0 flex-1 overflow-hidden rounded-xl border">
           <AgentChat />
         </section>

@@ -1,5 +1,18 @@
-import { Bot } from "lucide-react";
 import {
+  Bot,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Download,
+  MoreHorizontal,
+  RefreshCw,
+} from "lucide-react";
+import {
+  ActionBarMorePrimitive,
+  ActionBarPrimitive,
+  AuiIf,
+  BranchPickerPrimitive,
   ErrorPrimitive,
   MessagePrimitive,
   groupPartByType,
@@ -20,6 +33,8 @@ import {
   ToolGroupRoot,
   ToolGroupTrigger,
 } from "@/components/assistant-ui/tool-group";
+import { TooltipIconButton } from "@/components/assistant-ui/tooltip-icon-button";
+import { cn } from "@/lib/utils";
 
 import { type AgentStatus } from "./agent-status";
 import { ThinkingIndicator } from "./thinking-indicator";
@@ -134,7 +149,92 @@ export function AgentMessage() {
             </ErrorPrimitive.Root>
           </MessagePrimitive.Error>
         </div>
+
+        <div
+          data-slot="agent-message-footer"
+          className="ms-2 flex min-h-7 items-center pt-1.5"
+        >
+          <BranchPicker />
+          <AssistantActionBar />
+        </div>
       </div>
     </MessagePrimitive.Root>
+  );
+}
+
+/** Copy / reload / export actions (parity with the reference thread). */
+function AssistantActionBar() {
+  return (
+    <ActionBarPrimitive.Root
+      hideWhenRunning
+      autohide="not-last"
+      className="text-muted-foreground animate-in fade-in -ms-1 flex gap-1 duration-200"
+    >
+      <ActionBarPrimitive.Copy asChild>
+        <TooltipIconButton tooltip="Copy">
+          <AuiIf condition={(s) => s.message.isCopied}>
+            <Check className="animate-in zoom-in-50 fade-in duration-200 ease-out" />
+          </AuiIf>
+          <AuiIf condition={(s) => !s.message.isCopied}>
+            <Copy className="animate-in zoom-in-75 fade-in duration-150" />
+          </AuiIf>
+        </TooltipIconButton>
+      </ActionBarPrimitive.Copy>
+      <ActionBarPrimitive.Reload asChild>
+        <TooltipIconButton tooltip="Refresh">
+          <RefreshCw />
+        </TooltipIconButton>
+      </ActionBarPrimitive.Reload>
+      <ActionBarMorePrimitive.Root>
+        <ActionBarMorePrimitive.Trigger asChild>
+          <TooltipIconButton
+            tooltip="More"
+            className="data-[state=open]:bg-accent"
+          >
+            <MoreHorizontal />
+          </TooltipIconButton>
+        </ActionBarMorePrimitive.Trigger>
+        <ActionBarMorePrimitive.Content
+          side="bottom"
+          align="start"
+          sideOffset={6}
+          className="bg-popover/95 text-popover-foreground data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:animate-out data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-32 overflow-hidden rounded-xl border p-1.5 shadow-lg backdrop-blur-sm"
+        >
+          <ActionBarPrimitive.ExportMarkdown asChild>
+            <ActionBarMorePrimitive.Item className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm outline-none select-none">
+              <Download className="size-4" />
+              Export as Markdown
+            </ActionBarMorePrimitive.Item>
+          </ActionBarPrimitive.ExportMarkdown>
+        </ActionBarMorePrimitive.Content>
+      </ActionBarMorePrimitive.Root>
+    </ActionBarPrimitive.Root>
+  );
+}
+
+/** Branch navigation (regenerate branches), parity with the reference thread. */
+function BranchPicker({ className }: { className?: string }) {
+  return (
+    <BranchPickerPrimitive.Root
+      hideWhenSingleBranch
+      className={cn(
+        "text-muted-foreground -ms-2 me-2 inline-flex items-center text-xs",
+        className,
+      )}
+    >
+      <BranchPickerPrimitive.Previous asChild>
+        <TooltipIconButton tooltip="Previous">
+          <ChevronLeft />
+        </TooltipIconButton>
+      </BranchPickerPrimitive.Previous>
+      <span className="font-medium">
+        <BranchPickerPrimitive.Number /> / <BranchPickerPrimitive.Count />
+      </span>
+      <BranchPickerPrimitive.Next asChild>
+        <TooltipIconButton tooltip="Next">
+          <ChevronRight />
+        </TooltipIconButton>
+      </BranchPickerPrimitive.Next>
+    </BranchPickerPrimitive.Root>
   );
 }

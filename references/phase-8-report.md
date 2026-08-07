@@ -69,13 +69,36 @@ chat.
 
 ## Deliverables
 
-- `sdk/ui-sdk/components/assistant-ui/` — 8 harvested base components + READMEs (MIT).
+- `sdk/ui-sdk/components/assistant-ui/` — **10** harvested base components + READMEs (MIT):
+  thread, thread-list (conversation history), assistant-modal (copilot), markdown-text,
+  tool-group, tool-fallback, reasoning, attachment, follow-up-suggestions,
+  tooltip-icon-button.
 - `sdk/ui-sdk/components/agent/` — 12 first-party files (11 components + `agent-status.ts`).
-- `sdk/ui-sdk/examples/agent-chat/` — mock-runtime + demo screen (no backend).
+- `sdk/ui-sdk/examples/agent-chat/` — mock-runtime + demo screen (no backend) with a
+  conversation-history sidebar.
 - Docs: `sdk/patterns/agent-chat.md`, `sdk/ux/design-decisions.md` (D-005), `sdk/ux/screens.md`,
-  `sdk/ui-sdk/docs/CONSUMPTION.md` (agent section), `sdk/ui-sdk/components-index.md` (+20
+  `sdk/ui-sdk/docs/CONSUMPTION.md` (agent section), `sdk/ui-sdk/components-index.md` (+22
   entries), `cli/generate-manifest.js` (copy rule + `EXTRA_DEPS`), `cli/test/install.test.js`
   (+3 assertions), root + SDK READMEs.
+
+## Completeness pass (2026-08-08, second review round)
+
+Re-verified against the FULL assistant-ui documentation (`llms-full.txt` — 3330 sections,
+indexed via context-mode) and the API reference overview:
+
+- **Action bar + branch picker restored in `AgentMessage`** — the first implementation
+  replaced the reference assistant message and silently dropped copy / reload / export
+  actions and branch navigation; now parity with the reference thread.
+- **Conversation history** (`thread-list`, from the original spec's "Historique
+  conversation") harvested: search, date groups, rename/archive/delete, skeleton.
+- **Copilot modal** (`assistant-modal`) harvested for the "ask from anywhere" desktop
+  pattern.
+- **`threadlist-sidebar` registry component REJECTED** — branded demo (assistant-ui logo,
+  GitHub link), not neutral kit material; the kit ships `thread-list` as the neutral
+  building block and lets consumers own their layout.
+- Syntax highlighting: documented as optional (react-shiki per assistant-ui docs); the
+  kit markdown already ships code headers + copy. Multi-agent (nested threads in tool
+  UIs) documented in the pattern.
 
 ## Follow-ups
 

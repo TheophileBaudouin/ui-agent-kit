@@ -70,9 +70,9 @@ the kit dependency-free.
 The kit's agent chat is a two-layer contract:
 
 1. **Base** — the official assistant-ui registry components in `components/assistant-ui/`
-   (harvested from `https://r.assistant-ui.com/thread.json`, MIT). They import the
-   consumer's frozen base (`@/components/ui/*`, `@/lib/utils`) like any kit piece.
-   Vendored third-party code: relax `react-hooks`/`react-refresh` lint rules for this
+   (harvested from `https://r.assistant-ui.com/{thread,thread-list,assistant-modal}.json`, MIT).
+   They import the consumer's frozen base (`@/components/ui/*`, `@/lib/utils`) like any kit
+   piece. Vendored third-party code: relax `react-hooks`/`react-refresh` lint rules for this
    folder (same contract as evilcharts/shadcncraft).
 2. **Agent components** — first-party, presentational, runtime-agnostic in
    `components/agent/`. The full integration lives in `AgentChat` (Thread + tool cards +
@@ -126,7 +126,7 @@ export function SettingsScreen() {
 | `components/hextaui/` | Settings / auth / billing screens |
 | `components/retab/` | File upload primitives (dropzone, size format) + hook |
 | `components/shadcncraft/` | Marketing sections (hero, marquee, rating…) |
-| `components/assistant-ui/` | **Agent chat base** — assistant-ui registry (Thread, markdown, tool groups, reasoning, attachments) |
+| `components/assistant-ui/` | **Agent chat base** — assistant-ui registry (Thread, conversation history, copilot modal, markdown, tool groups, reasoning, attachments) |
 | `components/agent/` | **Agent components** — AgentChat, AgentMessage, AgentComposer, ThinkingIndicator, ToolCallCard, ToolResult, ApprovalCard, ExecutionTimeline, ArtifactPreview, useAgentStatus |
 | `blocks/blocks-so/` | Full page blocks (command menu, login, onboarding, stats…) |
 | `layouts/`, `templates/`, `examples/` | Reserved — populated in later phases |

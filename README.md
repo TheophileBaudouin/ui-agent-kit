@@ -38,7 +38,7 @@ dependency. No subscription, no build step, no lock-in — your app keeps its ow
 Wails desktop apps need a **premium, consistent, accessible UI** without reinventing every
 screen. `ui-agent-kit` packages what a senior frontend would keep in their head:
 
-- **60 license-verified components & blocks** harvested from the best open-source
+- **62 license-verified components & blocks** harvested from the best open-source
   registries, each with provenance and a per-piece README — including an **agent chat
   kit** (assistant-ui base + AgentChat, tool cards, human approvals);
 - **10 interface rules + 8 screen patterns** distilled from Apple HIG, WCAG 2.2 and Vercel
@@ -157,7 +157,7 @@ only adds/overwrites its own files — it never edits or deletes consumer files.
 
 | Area | Location in `ui-kit/` | Contents |
 | --- | --- | --- |
-| Components & blocks | `ui-sdk/components/`, `ui-sdk/blocks/` | 60 pieces by origin: evilcharts charts, hextaui settings/auth/billing, retab upload, shadcncraft marketing, blocks-so page blocks, **assistant-ui agent chat base + agent components** (AgentChat, ToolCallCard, ApprovalCard…) + `components-index.md` |
+| Components & blocks | `ui-sdk/components/`, `ui-sdk/blocks/` | 62 pieces by origin: evilcharts charts, hextaui settings/auth/billing, retab upload, shadcncraft marketing, blocks-so page blocks, **assistant-ui agent chat base** (thread, history, modal) + **agent components** (AgentChat, ToolCallCard, ApprovalCard…) + `components-index.md` |
 | Interface rules | `ui-rules/` | 10 rules: spacing, colors, typography, animations, accessibility, layout, icons, keyboard, desktop, dialogs — each citing its source |
 | Screen patterns | `patterns/` | 9 recurring screens: settings-page, dashboard, wizard, login, file-explorer, preferences, search, table, agent-chat |
 | Design memory | `ux/` | Personas, user flows, navigation, screens, shortcuts, design decisions |

@@ -15,6 +15,8 @@ in the consumer's app, installed via the shadcn CLI. This index lists the kit's 
 | approval-card | component (agent) | Human approval gate (Accept/Deny/shortcuts) | Ready |
 | artifact-preview | component (agent) | Generated artifact preview with actions | Ready |
 | attachment | component (assistant-ui) | Composer/user-message attachments (assistant-ui registry) | Ready |
+| assistant-modal | component (assistant-ui) | Chat-in-popover copilot launcher (assistant-ui registry) | Ready |
+| thread-list | component (assistant-ui) | Conversation history sidebar (assistant-ui registry) | Ready |
 | execution-timeline | component (agent) | Agent run steps with status icons | Ready |
 | follow-up-suggestions | component (assistant-ui) | Suggestion chips (assistant-ui registry) | Ready |
 | markdown-text | component (assistant-ui) | Streaming markdown with copy (assistant-ui registry) | Ready |
