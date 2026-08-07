@@ -1,6 +1,6 @@
 {
   "name": "ui-agent-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Single-command installer for the ui-agent-kit desktop UI SDK (components, rules, patterns, skills for Wails apps).",
   "type": "module",
   "license": "MIT",
