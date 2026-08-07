@@ -16,6 +16,7 @@
 | 5 | ui-review skill | Review guard operational on the real SDK | One successful test review on an example screen | ✅ done — report `references/phase-5-report.md` |
 | 6 | Continuous audit (optional) | Recurring audit skill re-checking constitution compliance | To define with Théo if wanted | ⏳ pending — skill `skills/meta-audit/` ready, first run: `references/audit-2026-08-06.md` |
 | 7 | Single-command installer | Zero-dependency Node CLI (`npx ui-agent-kit`): install/update/doctor, generated manifest, import self-check, e2e tests, docs | All e2e tests green; install verified on a Wails `frontend/` layout | ✅ done — 11 tests, report `references/phase-7-report.md` |
+| 8 | Agent chat UI | assistant-ui base harvested + agent components (chat, status, tools, approvals, timeline, artifacts) + example | Build green in ui-workspace, manifest/tests/markdownlint green, fresh review applied | ✅ done — report `references/phase-8-report.md` |
 
 ## What is allowed now (post-Phase 5)
 
@@ -39,7 +40,5 @@
 - **2026-08-06**: phases 0–5 executed and validated by Théo; audit performed
   (`references/audit-2026-08-06.md`), state files updated to reflect reality, repository
   pushed to GitHub.
-- **2026-08-07**: Phase 7 (single-command installer) executed at Théo's request
-  (`references/phase-7-report.md`), pushed to GitHub; second audit
-  (`references/audit-2026-08-07.md`); npm package `ui-agent-kit@0.1.0` published
-  (passkey/WebAuthn 2FA).
+- **2026-08-08**: Phase 8 (agent chat UI — assistant-ui base + agent components, example
+  with mock runtime) executed at Théo's request, fresh review applied, pushed to GitHub.

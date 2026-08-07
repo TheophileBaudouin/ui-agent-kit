@@ -11,7 +11,9 @@ The frozen-base reference (`ui-workspace/`, gitignored, 61 shadcn components) is
 temporary buildable mirror used to verify SDK pieces.
 Current state: **phases 0–5 executed and validated by Théo (2026-08-06)** — governance
 populated, SDK operational and published; **Phase 7 (single-command installer) executed at
-Théo's request (2026-08-06), pushed and published on npm**. Phase 6 (optional audit) pending.
+Théo's request (2026-08-06), pushed and published on npm**; **Phase 8 (agent chat UI —
+assistant-ui base + agent components) executed at Théo's request (2026-08-08), pushed**.
+Phase 6 (optional audit) pending.
 
 ## Before doing anything
 
