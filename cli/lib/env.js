@@ -3,6 +3,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 export const MIN_NODE_MAJOR = 18;
 
@@ -43,6 +44,12 @@ export function detectPackageManager(frontendRoot) {
 /** Windows ships `npx.cmd`, `npm.cmd`, … — plain `npx` works only on POSIX shells. */
 export function cmdName(base) {
   return process.platform === "win32" ? `${base}.cmd` : base;
+}
+
+/** True when the package-manager binary is runnable (e.g. bun installed). */
+export function pmAvailable(pm) {
+  const result = spawnSync(cmdName(pm), ["--version"], { stdio: "ignore", shell: false });
+  return !result.error && result.status === 0;
 }
 
 export function nodeVersion() {

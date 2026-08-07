@@ -10,6 +10,11 @@
 Collapsible group that wraps consecutive tool calls of an agent step (one row per step,
 expandable to see each call). Rendered by `thread.tsx` for `group-tool` parts.
 
+> **Default variant: `ghost`** (kit decision D-006 — flat tool groups, no box).
+> `outline` / `muted` are opt-in via the `variant` prop. This is a documented deviation
+> from the assistant-ui registry default (`outline`), applied in the kit copy — the
+> consumer installs from `ui-sdk/`, not from the registry.
+
 ## Dependencies
 
 - Frozen base (consumer): `@/components/ui/collapsible`, `@/components/ui/tooltip`

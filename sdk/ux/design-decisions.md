@@ -22,3 +22,20 @@
 - Source: assistant-ui docs + registry (r.assistant-ui.com, MIT); Vercel AI SDK tool
   approval patterns; pattern `sdk/patterns/agent-chat.md`.
 - Status: Frozen
+
+## D-006 — 2026-08-08: ghost is the default variant for tool groups and reasoning
+
+- Context: assistant-ui's ToolGroup / ReasoningRoot default to the `outline` variant
+  (bordered boxes around every tool call and reasoning block). For a premium desktop
+  aesthetic the conversation should read flat: tool activity and reasoning are
+  informational, not boxed chrome.
+- Decision: the kit's default variant is **ghost** (no additional styling) for both
+  `ToolGroupRoot` and `ReasoningRoot`. This is enforced at the source: the default
+  variants of the harvested components were changed (documented deviation from the
+  registry, re-applied by the kit copy — the consumer installs from `ui-sdk/`, not from
+  the registry). `outline` / `muted` remain opt-in per usage.
+- Alternatives rejected: keeping the assistant-ui default (rejected: boxed tool groups
+  add visual noise to every step of an agent run).
+- Source: assistant-ui ToolGroup / Reasoning variants (r.assistant-ui.com, MIT); Apple
+  HIG minimal chrome (via `skills/macos-design-guidelines`).
+- Status: Frozen

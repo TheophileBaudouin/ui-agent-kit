@@ -16,6 +16,12 @@ never deletes consumer files), detects your package manager and Wails `frontend/
 and verifies every `@/` import after copying. Flags: `--skip-base`, `--skip-deps`,
 `--target <dir>`, `--force`.
 
+**Robustness contract** — the install never aborts because of consumer-side state: npm/pnpm
+peer-dependency conflicts (ERESOLVE) are retried with tolerant resolution
+(`--legacy-peer-deps` / strict-peer-dependencies off) and then installed individually,
+skipping failures with a warning; a lockfile-picked package manager that is not installed
+falls back to npm; the import self-check only vets the kit's own copies, never your `src/`.
+
 **Install layout** — the **entire `sdk/` folder is mirrored to `ui-kit/`** (reference copy:
 components, blocks, rules, patterns, ux, skills, docs, configs — nothing is left out).
 On top of that, the code pieces are copied into `src/` so the `@/` imports resolve:

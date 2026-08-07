@@ -28,7 +28,9 @@ const toolGroupVariants = cva("aui-tool-group-root group/tool-group w-full", {
       muted: "border-muted-foreground/30 bg-muted/30 rounded-lg border py-3",
     },
   },
-  defaultVariants: { variant: "outline" },
+  // Kit decision D-006: ghost is the default — flat, minimal tool groups (no
+  // box) matching the desktop aesthetic. outline/muted stay opt-in.
+  defaultVariants: { variant: "ghost" },
 });
 
 export type ToolGroupRootProps = Omit<

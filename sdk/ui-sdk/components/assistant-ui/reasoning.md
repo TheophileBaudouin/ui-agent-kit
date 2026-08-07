@@ -10,6 +10,11 @@
 Collapsible chain-of-thought / reasoning block (expand to read the reasoning text).
 Rendered by `thread.tsx` for `reasoning` and `group-reasoning` parts.
 
+> **Default variant: `ghost`** (kit decision D-006 — flat reasoning blocks, no box).
+> `outline` / `muted` are opt-in via the `variant` prop. This is a documented deviation
+> from the assistant-ui registry default (`outline`), applied in the kit copy — the
+> consumer installs from `ui-sdk/`, not from the registry.
+
 ## Dependencies
 
 - Frozen base (consumer): `@/components/ui/collapsible`, `@/components/ui/tooltip`

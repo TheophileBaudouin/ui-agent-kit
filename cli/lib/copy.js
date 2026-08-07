@@ -15,16 +15,32 @@ function applyRule(pkgRoot, targetRoot, rule, dryRun) {
   const to = path.join(targetRoot, rule.to);
   if (!fs.existsSync(from)) {
     log.warn(`copy source missing (skipped): ${rule.from}`);
-    return { copied: 0, skipped: 0 };
+    return { copied: 0, skipped: 0, files: [] };
   }
   if (dryRun) {
     const stats = fs.statSync(from);
-    return { copied: stats.isDirectory() ? countFiles(from) : 1, skipped: 0 };
+    return { copied: stats.isDirectory() ? countFiles(from) : 1, skipped: 0, files: [] };
   }
   // force:true — re-running install/update refreshes SDK files to the new version.
   // The kit never deletes consumer files; it only adds/overwrites its own.
   fs.cpSync(from, to, { recursive: true, force: true });
-  return { copied: countFiles(from), skipped: 0 };
+  // For the import self-check, report the copied CODE files as paths relative to
+  // the target root (only src/ rules matter — ui-kit/ is the knowledge mirror).
+  const files =
+    rule.to.startsWith("src/")
+      ? filesUnder(from).map((f) => path.join(rule.to, f))
+      : [];
+  return { copied: countFiles(from), skipped: 0, files };
+}
+
+function filesUnder(dir, root = dir) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const abs = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...filesUnder(abs, root));
+    else out.push(path.relative(root, abs));
+  }
+  return out;
 }
 
 function countFiles(dir) {
@@ -36,16 +52,18 @@ function countFiles(dir) {
   return n;
 }
 
-/** Apply all copy rules; returns total copied file count. */
+/** Apply all copy rules; returns total copied count + the copied code files. */
 export function applyCopyRules(pkgRoot, targetRoot, rules, dryRun = false) {
   log.step("Copying the SDK");
   let total = 0;
+  const copiedFiles = [];
   for (const rule of rules) {
-    const { copied } = applyRule(pkgRoot, targetRoot, rule, dryRun);
+    const { copied, files } = applyRule(pkgRoot, targetRoot, rule, dryRun);
     total += copied;
+    copiedFiles.push(...files);
   }
   log.ok(`${total} SDK files in place (code → src/, knowledge → ui-kit/)`);
-  return total;
+  return { total, copiedFiles };
 }
 
 // ---------------------------------------------------------------------------
@@ -78,7 +96,6 @@ const IMPORT_RE = /\bfrom\s+["'](@\/[^"']+)["']/g;
 export function verifyImports(targetRoot, files) {
   const errors = [];
   const warnings = [];
-  const src = path.join(targetRoot, "src");
 
   for (const file of files) {
     const abs = path.join(targetRoot, file);
@@ -99,16 +116,4 @@ export function verifyImports(targetRoot, files) {
     }
   }
   return { errors, warnings };
-}
-
-/** Collect all copied source files under a target subdir (relative paths). */
-export function listSourceFiles(dir, root = dir) {
-  if (!fs.existsSync(dir)) return [];
-  const out = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const abs = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...listSourceFiles(abs, root));
-    else out.push(path.relative(root, abs));
-  }
-  return out;
 }

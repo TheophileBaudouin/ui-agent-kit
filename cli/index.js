@@ -6,14 +6,19 @@
 //   npx ui-agent-kit doctor              check prerequisites and report problems
 // Flags: --yes | --skip-base | --skip-deps | --target <dir> | --force | --version | --help
 // Zero runtime dependencies: node builtins only (>=18.17).
+//
+// Robustness contract: install NEVER aborts because of consumer-side state —
+// peer-dependency conflicts (deps step tolerates + skips), a lockfile-picked
+// package manager that is not installed (falls back to npm), or the consumer's
+// own src/ files (import self-check only vets the kit's copies).
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { log, elapsed } from "./lib/log.js";
-import { detectPackageManager, findFrontendRoot, hasViteReact, nodeVersionOk } from "./lib/env.js";
-import { applyCopyRules, listSourceFiles, verifyImports } from "./lib/copy.js";
+import { detectPackageManager, findFrontendRoot, hasViteReact, nodeVersionOk, pmAvailable } from "./lib/env.js";
+import { applyCopyRules, verifyImports } from "./lib/copy.js";
 import { installDeps, isInstalled } from "./lib/deps.js";
 import { ensureBase, baseInstalled } from "./lib/base.js";
 import { applyConfigs } from "./lib/configs.js";
@@ -113,7 +118,14 @@ function locateProject(opts) {
 async function runInstall(opts) {
   const started = Date.now();
   const { frontendRoot } = locateProject(opts);
-  const pm = detectPackageManager(frontendRoot);
+  // Package-manager priority comes from the lockfiles (bun > pnpm > yarn > npm);
+  // a lockfile-picked PM that is NOT installed falls back to npm instead of
+  // aborting the install.
+  let pm = detectPackageManager(frontendRoot);
+  if (!pmAvailable(pm)) {
+    log.warn(`${pm} detected (lockfile) but not installed — falling back to npm`);
+    pm = "npm";
+  }
   const manifest = readPackageManifest(CLI_DIR);
   const uiKitDir = path.join(frontendRoot, KIT_DIR_NAME);
 
@@ -122,11 +134,11 @@ async function runInstall(opts) {
   log.info(`SDK version: ${manifest.version}`);
 
   // 1 — copy
-  applyCopyRules(PKG_ROOT, frontendRoot, manifest.copyRules);
+  const { copiedFiles } = applyCopyRules(PKG_ROOT, frontendRoot, manifest.copyRules);
 
-  // 2 — import self-check on everything copied under src/
-  const copied = listSourceFiles(path.join(frontendRoot, "src"));
-  const { errors, warnings } = verifyImports(frontendRoot, copied);
+  // 2 — import self-check on the files the kit just copied (the consumer's own
+  // src/ is never scanned — their state must not block the install).
+  const { errors, warnings } = verifyImports(frontendRoot, copiedFiles);
   for (const w of warnings) log.warn(w);
   if (errors.length > 0) {
     for (const e of errors) log.error(e);
@@ -139,7 +151,7 @@ async function runInstall(opts) {
   // 3 — frozen base (unless skipped)
   const base = ensureBase(frontendRoot, { skip: opts.skipBase });
 
-  // 4 — dependencies (unless skipped)
+  // 4 — dependencies (unless skipped; never aborts on resolution conflicts)
   if (!opts.skipDeps) {
     installDeps(frontendRoot, pm, manifest.deps);
   } else {

@@ -38,8 +38,10 @@ const reasoningVariants = cva("aui-reasoning-root mb-4 w-full", {
       muted: "bg-muted/50 rounded-lg px-3 py-2",
     },
   },
+  // Kit decision D-006: ghost is the default — flat reasoning blocks (no box)
+  // matching the desktop aesthetic. outline/muted stay opt-in.
   defaultVariants: {
-    variant: "outline",
+    variant: "ghost",
   },
 });
 
