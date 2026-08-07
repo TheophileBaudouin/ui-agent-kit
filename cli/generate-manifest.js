@@ -35,6 +35,11 @@ const isBaseProvided = (spec) =>
   spec.startsWith("@wailsio/") ||
   spec.startsWith("node:");
 
+// npm deps the SDK needs but that never appear in a .ts/.tsx import — CSS-only
+// imports (`@import "tw-shimmer"` in the consumer's index.css, required by the
+// assistant-ui markdown shimmer). They MUST still be installed by the CLI.
+const EXTRA_DEPS = new Set(["tw-shimmer"]);
+
 // Canonical copy rules. The ENTIRE sdk/ folder is mirrored to ui-kit/ (reference
 // copy: components, blocks, rules, patterns, ux, skills, docs, configs — nothing
 // is left out). On top of that, the code pieces are copied into src/ so the
@@ -47,6 +52,7 @@ const COPY_RULES = [
   { from: "sdk/ui-sdk/components", to: "src/components" },
   { from: "sdk/ui-sdk/blocks/blocks-so", to: "src/components" }, // flat — blocks are self-contained
   { from: "sdk/ui-sdk/examples/preferences-screen", to: "src/components/example" },
+  { from: "sdk/ui-sdk/examples/agent-chat", to: "src/components/example-agent" },
 ];
 
 const IMPORT_RE = /\bfrom\s+["']([^"']+)["']/g;
@@ -77,6 +83,7 @@ function collectDeps() {
       if (!isBaseProvided(bare)) deps.add(bare);
     }
   }
+  for (const extra of EXTRA_DEPS) deps.add(extra);
   return [...deps].sort();
 }
 

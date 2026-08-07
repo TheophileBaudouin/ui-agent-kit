@@ -10,3 +10,6 @@ ui-workspace/
 
 # macOS
 .DS_Store
+
+# Sub-agent working artifacts (pi-subagents output dir)
+.pi-subagents/

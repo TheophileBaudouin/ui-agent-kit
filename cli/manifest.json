@@ -1,11 +1,16 @@
 {
   "version": "0.1.0",
   "deps": [
+    "@assistant-ui/react",
+    "@assistant-ui/react-markdown",
     "@tabler/icons-react",
     "echarts",
     "motion",
     "react-medium-image-zoom",
-    "recharts"
+    "recharts",
+    "remark-gfm",
+    "tw-shimmer",
+    "zustand"
   ],
   "copyRules": [
     {
@@ -23,7 +28,11 @@
     {
       "from": "sdk/ui-sdk/examples/preferences-screen",
       "to": "src/components/example"
+    },
+    {
+      "from": "sdk/ui-sdk/examples/agent-chat",
+      "to": "src/components/example-agent"
     }
   ],
-  "generatedAt": "2026-08-06T23:04:57.511Z"
+  "generatedAt": "2026-08-07T22:11:15.170Z"
 }
